@@ -144,6 +144,30 @@ const app = {
       image: "./assets/image/Waitingforyou-Mono.jpg",
       path: "./assets/music/WaitingForYou-MONO.mp3",
     },
+    {
+      name: "Anh chưa thương em đến vậy đâu",
+      singer: "Lady Mây",
+      image: "./assets/image/anhchuathuongemdenvaydau.jpg",
+      path: "./assets/music/Anh-Chua-Thuong-Em-Den-Vay-Dau-Lady-May.mp3",
+    },
+    {
+      name: "Chưa quên người yêu cũ",
+      singer: "Hà Nhi",
+      image: "./assets/image/ChuaQuenNguoiYeuCu-HaNhi.jpg",
+      path: "./assets/music/ChuaQuenNguoiYeuCu-HaNhi.mp3",
+    },
+    {
+      name: "Một ngàn nỗi đau",
+      singer: "Văn Mai Hương - Hứa Kim Tuyền",
+      image: "./assets/image/MotNganNoiDau-VanMaiHuongHuaKimTuyen.jpg",
+      path: "./assets/music/MotNganNoiDau-VanMaiHuongHuaKimTuyen.mp3",
+    },
+    {
+      name: "Tự tình 2",
+      singer: "Trung Quân Idol",
+      image: "./assets/image/TuTinh2.jpg",
+      path: "./assets/music/TuTinh2LiveAtSoulOfTheForest-TrungQuanIdol.mp3",
+    },
   ],
 
   //render
