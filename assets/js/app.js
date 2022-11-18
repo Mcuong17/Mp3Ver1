@@ -13,6 +13,8 @@ const playBtn = $('.btn-toggle-play')
 const player = $('.player')
 const nextBtn = $('.btn-next')
 const prevBtn = $('.btn-prev')
+const randomBtn = $('.btn-random')
+const repeatBtn = $('.btn-repeat') 
 const songs = [
   {
     name: "Anh yêu em cực",
@@ -79,6 +81,8 @@ const songs = [
 const app = {
     currentIndex: 0,
     isPlaying: false,
+    isRandom: false,
+    isRepeat: false,
   songs: [
     {
       name: "Anh yêu em cực",
@@ -144,9 +148,9 @@ const app = {
 
   //render
   renderHTML: function () {
-    const htmls = this.songs.map(function (song) {
+    const htmls = this.songs.map(function (song, index) {
       return `
-            <div class="song">
+            <div class="song ${index === app.currentIndex ? 'active': ''} "  data-index = ${index}>
                 <div class="thumb" style="background-image: url('${song.image}');" >
                 </div>
                 <div class="body">
@@ -173,12 +177,12 @@ const app = {
         cd.style.opacity = newCdWidth / cdWidth
     }
     // xử lý CD quay / dừng
-    const cdThumbRotate = cdThumb.animate(
-        [{transform: 'rotate(360deg)'}],
-        {duration: 10000,
-        interation: Infinity
-        }
-    )
+    let rotate360 = [
+        {transform: 'rotate(360deg)'}
+    ]
+    var cdThumbRotate = cdThumb.animate(rotate360, {
+        duration: 10000,
+        iterations: Infinity})
     cdThumbRotate.pause()
     // play song
     playBtn.onclick = function() {
@@ -192,6 +196,7 @@ const app = {
     audio.onplay = function() {
         app.isPlaying = true
         player.classList.add('playing')
+        cd.classList.add('active')
         cdThumbRotate.play()
     }
     //bài hát bị dừng
@@ -214,13 +219,56 @@ const app = {
       }
       //khi ấn nút next
       nextBtn.onclick = function() {
-        app.nextSong()
+        if(app.isRandom) {
+            app.playRandom()
+        } else {
+            app.nextSong()
+        }
         audio.play()
+        app.renderHTML()
+        app.scrollToActive()
       }
       //khi ấn nút prev
       prevBtn.onclick = function() {
-        app.prevSong()
+        if(app.isRandom) {
+            app.playRandom()
+        } else {
+            app.prevSong()
+        }
         audio.play()
+        app.renderHTML()
+        app.scrollToActive()
+      }
+      // khi ấn nút random bật tắt random
+      randomBtn.onclick = function() {
+        app.isRandom = !app.isRandom
+        randomBtn.classList.toggle('active', app.isRandom)
+      }
+      // Xử lý khi songs ended: khi hết bài nếu chọn repeat thì lặp lại chính nó còn kh thì next
+      audio.onended = function() {
+        if(app.isRepeat) {
+            audio.play()
+        } else {
+            nextBtn.click()
+        }
+      }
+      //Xử lý lặp lại bài hát
+      repeatBtn.onclick = function() {
+        app.isRepeat = !app.isRepeat
+        repeatBtn.classList.toggle('active', app.isRepeat)
+      }
+      // Lắng nghe click vào playlist, e: eventv e.target: chọn đúng cái mục tiêu đó
+      playlist.onclick = function(e) {
+        // xử lý khi click vào song
+        const songNode = e.target.closest('.song:not(.active)')
+        if(songNode || e.target.closest('.option')){
+            if(songNode) {
+                app.currentIndex = +(songNode.dataset.index)
+                app.loadCurrentSong()
+                app.renderHTML()
+                audio.play()
+            }
+        }
       }
   },
   defineProperties: function() {
@@ -248,6 +296,31 @@ const app = {
         this.currentIndex = this.songs.length - 1
     }
     this.loadCurrentSong()
+  },
+  playRandom: function() {
+    let newIndex
+    do {
+        newIndex = Math.floor(Math.random() * this.songs.length)
+    } while (newIndex === this.currentIndex)
+    this.currentIndex = newIndex
+    this.loadCurrentSong()
+  },
+  scrollToActive: function() {
+    if(app.currentIndex == 0 || app.currentIndex == 1 || app.currentIndex == 2) {
+        setTimeout(() => {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        },300)
+    } else {
+        setTimeout(() => {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            })
+        },300)
+    }
   },
   start: function () {
     this.renderHTML();

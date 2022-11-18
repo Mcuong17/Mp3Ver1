@@ -1,6 +1,8 @@
 :root {
     --primary-color: #ec1f55;
     --text-color: #333;
+    --gradient-primary-color: linear-gradient(to top right, #f77062 0%, #fe5196 100%);
+    --gradient-bg-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }
 
 * {
@@ -12,7 +14,7 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 }
 
 html {
@@ -31,7 +33,7 @@ html {
     top: 0;
     width: 100%;
     max-width: 480px;
-    background-color: #fff;
+    background: linear-gradient(#ddd6f3, #faaca8);
     border-bottom: 1px solid #ebebeb;
     z-index: 1;
 }
@@ -55,6 +57,7 @@ header h2 {
     display: flex;
     width: 200px;
     margin: auto;
+    
 }
 
 .cd .cd-thumb {
@@ -63,6 +66,9 @@ header h2 {
     background-color: #333;
     background-size: cover;
     border-radius: 50%;
+}
+.cd.active {
+    animation: soundBeats 1.2s infinite;
 }
 
 .control {
@@ -107,8 +113,9 @@ header h2 {
   .progress::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 12px;
-    height: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
     background-color: var(--primary-color);
     cursor: pointer;
   }
@@ -183,3 +190,33 @@ header h2 {
   .player.playing .icon-play {
     display: none;
   }
+
+@keyframes soundBeats {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    25% {
+        transform: rotate(0deg) scale(1.02);
+    }
+
+    45% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(0deg) scale(1.02);
+    }
+
+    70% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    75% {
+        transform: rotate(0deg) scale(1.02);
+    }
+
+    95% {
+        transform: rotate(0deg) scale(1);
+    }
+}
